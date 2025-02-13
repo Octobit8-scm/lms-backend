@@ -9,3 +9,13 @@
 ## CodeQL Analysis
 
 ## Sonarcloud analysis
+
+# Environments
+
+## Development
+
+## QA
+
+## Staging
+
+## Production
