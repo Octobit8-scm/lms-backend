@@ -8,78 +8,28 @@ on:
   pull_request:
     branches:
       - main
+      - develop
 
 jobs:
   pylint:
     name: Run Pylint
-    runs-on: self-hosted
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-
-      - name: Install Dependencies
-        run: pip install pylint
-
-      - name: Run Pylint
-        run: pylint --exit-zero $(git ls-files '*.py')
+    uses: ./.github/workflows/pylint.yml # Calls the Pylint workflow
+    with: {}
 
   django_build_test:
     name: Django Build & Test
     needs: pylint
-    runs-on: self-hosted
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt
-          python manage.py migrate
-
-      - name: Run Tests
-        run: python manage.py test
+    uses: ./.github/workflows/django.yml # Calls the Django workflow
+    with: {}
 
   codeql_analysis:
     name: CodeQL Analysis
     needs: django_build_test
-    runs-on: self-hosted
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    uses: ./.github/workflows/codeql.yml # Calls the CodeQL workflow
+    with: {}
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: python
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
-
-  sonarqube_analysis:
-    name: SonarQube Analysis
+  SonarCloud analysis:
+    name:  SonarCloud analysis
     needs: codeql_analysis
-    runs-on: self-hosted
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: SonarQube Scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONARQUBE_HOST }}
-        run: |
-          sonar-scanner \
-            -Dsonar.projectKey=my-django-project \
-            -Dsonar.sources=. \
-            -Dsonar.host.url=$SONAR_HOST_URL \
-            -Dsonar.login=$SONAR_TOKEN
+    uses: ./.github/workflows/sonarcloud.yml # Calls the CodeQL workflow
+    with: {}
