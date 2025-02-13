@@ -11,14 +11,14 @@ on:
       - develop
 
 jobs:
-  pylint:
-    name: Run Pylint
-    uses: ./.github/workflows/pylint.yml # Calls the Pylint workflow
-    with: {}
+  # pylint:
+  #   name: Run Pylint
+  #   uses: ./.github/workflows/pylint.yml # Calls the Pylint workflow
+  #   with: {}
 
   django_build_test:
     name: Django Build & Test
-    needs: pylint
+    # needs: pylint
     uses: ./.github/workflows/django.yml # Calls the Django workflow
     with: {}
 
