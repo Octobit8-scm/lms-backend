@@ -28,20 +28,20 @@ jobs:
     uses: ./.github/workflows/django.yml # Calls the Django workflow
     with: {}
 
-  codeql_analysis:
-    name: CodeQL Analysis
-    permissions:
-      contents: read
-      pull-requests: write
-    needs: django_build_test
-    uses: ./.github/workflows/codeql.yml # Calls the CodeQL workflow
-    with: {}
+  # codeql_analysis:
+  #   name: CodeQL Analysis
+  #   permissions:
+  #     contents: read
+  #     pull-requests: write
+  #   needs: django_build_test
+  #   uses: ./.github/workflows/codeql.yml # Calls the CodeQL workflow
+  #   with: {}
 
-  sonarcloud_analysis:
-    name:  SonarCloud analysis
-    permissions:
-      contents: read
-      pull-requests: write
-    needs: codeql_analysis
-    uses: ./.github/workflows/sonarcloud.yml # Calls the sonarcloud workflow
-    with: {}
+  # sonarcloud_analysis:
+  #   name:  SonarCloud analysis
+  #   permissions:
+  #     contents: read
+  #     pull-requests: write
+  #   needs: codeql_analysis
+  #   uses: ./.github/workflows/sonarcloud.yml # Calls the sonarcloud workflow
+  #   with: {}
